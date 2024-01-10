@@ -42,6 +42,16 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
+<<<<<<< HEAD
         "stdio.h": "c"
     }
+=======
+        "bit": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "string_view": "cpp",
+        "numbers": "cpp"
+    },
+    "C_Cpp.default.compilerPath": "/usr/bin/gcc"
+>>>>>>> a0264ea170e5b38777d1e6ed419117bde40d0a98
 }
