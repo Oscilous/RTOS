@@ -27,9 +27,8 @@ extern void* put_mail(void *a)
 	while (actual_size == QUEUE_SIZE) pthread_cond_wait(&not_full,&mutex);	
 	QueueArray[(++queue_end) % QUEUE_SIZE] = a;
 	actual_size++;
-	pthread_mutex_unlock(&mutex);
 	pthread_cond_signal(&not_empty);
-
+	pthread_mutex_unlock(&mutex);
 }
 
 extern void* try_put_mail(void *a)
@@ -52,8 +51,8 @@ extern void* get_mail(void *a)
 	while (actual_size == 0) pthread_cond_wait(&not_empty,&mutex);
 	void* value = QueueArray[(queue_start++) % QUEUE_SIZE];
 	actual_size--;
-	pthread_mutex_unlock(&mutex);
 	pthread_cond_signal(&not_full);
+	pthread_mutex_unlock(&mutex);
 	return value;
 }
 
