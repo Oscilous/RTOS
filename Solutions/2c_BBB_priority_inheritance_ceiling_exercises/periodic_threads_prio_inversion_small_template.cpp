@@ -5,6 +5,8 @@
  * interface which was introduced in GNU libc 2.8 and kernel 2.6.25.
  */
 
+// sudo taskset -c 2 ./main
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
@@ -18,7 +20,7 @@
 using namespace std;
 
 // 89000000 is 1 sec:
-#define N_CPU_BURN 87000000 
+#define N_CPU_BURN 590000000
 
 
 pthread_t t_0;
@@ -102,7 +104,7 @@ void work(int time_units, int task_no, char output)
 
 static void* idle_thread(void *vptr)
 {
- int thread_no = (int) vptr;	
+ int thread_no = *(int*) vptr;	
  while(1)
  {
    work(1,thread_no,' ');
@@ -113,7 +115,7 @@ static void* idle_thread(void *vptr)
 static void *thread_1(void *vptr)
 {
 	
-        int thread_no = (int) vptr;	
+        int thread_no = *(int*) vptr;	
 	struct periodic_info info;
 
 	//printf("Thread 1 period 20 s\n");
@@ -129,7 +131,7 @@ static void *thread_1(void *vptr)
 static void *thread_2(void *vptr)
 {
 
-        int thread_no = (int) vptr;	
+        int thread_no = *(int*) vptr;	
 	struct periodic_info info;
 
 	//printf("Thread 2 period 20 s\n");
@@ -144,7 +146,7 @@ static void *thread_2(void *vptr)
 static void *thread_3(void *vptr)
 {
 
-        int thread_no = (int) vptr;	
+        int thread_no = *(int*) vptr;	
 	struct periodic_info info;
 
 	//printf("Thread 3 period 20 s\n");
@@ -162,12 +164,12 @@ static void *thread_3(void *vptr)
 int main(int argc, char *argv[])
 {
 
-// work calibration of N_CPU_BURN to 1 sec.:
-//int s,e;s=clock();work(1,0,'C');e=clock();cout<<endl<<e-s<<"us"<<endl;	
+	// work calibration of N_CPU_BURN to 1 sec.:
+	//int s,e;s=clock();work(1,0,'C');e=clock();cout<<endl<<e-s<<"us"<<endl;	
 	
 	pthread_mutexattr_t attr;
 	pthread_mutexattr_init(&attr);
-    // your code here
+    //pthread_mutexattr_setprotocol(&attr, PTHREAD_PRIO_INHERIT);
 	 pthread_mutex_init(&Mutex, &attr);
 
 	// Scheduling parameters
@@ -193,7 +195,7 @@ int main(int argc, char *argv[])
 	pthread_attr_init(&attr_t0);
 	pthread_attr_init(&attr_t1);
 	pthread_attr_init(&attr_t2);
-        pthread_attr_init(&attr_t3);
+		pthread_attr_init(&attr_t3);
 
 
 	pthread_attr_setinheritsched(&attr_t0, PTHREAD_EXPLICIT_SCHED);
